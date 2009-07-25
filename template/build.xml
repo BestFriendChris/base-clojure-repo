@@ -1,0 +1,34 @@
+<project name="clojure-project" default="jar">
+
+  <property name="src" location="src"/>
+  <property name="libs" location="libs"/>
+  <property name="target" location="target"/>
+  <property name="jarfile" location="${target}/clojure-project.jar"/>
+  <property name="test-suite-ns" value="test-suite"/>
+
+  <target name="clean" description="Remove generated files and directories.">
+    <delete dir="${target}"/>
+  </target>
+
+  <target name="test" description="Run the tests">
+    <java classname="clojure.main" failonerror="true">
+      <classpath>
+        <pathelement location="${src}"/>
+	<fileset dir="${libs}">
+	  <include name="**/*.jar" />
+	</fileset>
+      </classpath>
+      <arg value="-e"/>
+      <arg value="(use '${test-suite-ns}) (run)"/>
+    </java>
+  </target>
+
+  <target name="jar" description="Create jar file">
+    <mkdir dir="${target}" />
+    <jar jarfile="${jarfile}">
+      <fileset dir="${src}" includes="**/*.clj" excludes="**/test_suite.clj" />
+    </jar>
+  </target>
+
+</project>
+
